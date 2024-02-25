@@ -4,16 +4,20 @@ namespace App\Repositories;
 
 use App\Models\Product;
 use App\Repositories\Interfaces\CsvProductRepositoryInterface as CsvProductRepositoryInterface;
+use App\Services\Interfaces\CsvValidateConditionServiceInterface as CsvValidateConditionInterface;
+use Illuminate\Support\Facades\DB;
 
 class CsvProductRepository implements CsvProductRepositoryInterface
 {
     /**
      * Constructor for the CsvProductRepository class.
      *
-     * @param Product $_product         The Product instance
+     * @param Product $_product                                         The Product instance
+     * @param CsvValidateConditionInterface $_csvValidateCondition      The Csv Validate Condition instance
      */
     public function __construct(
-      private readonly Product $_product
+        private readonly Product                            $_product,
+        private readonly CsvValidateConditionInterface      $_csvValidateCondition
     ) {}
 
     /**
@@ -24,13 +28,15 @@ class CsvProductRepository implements CsvProductRepositoryInterface
      */
     public function createProductRow(array $csvRow): mixed
     {
-        return $this->_product->create([
-            'strProductDataCode' => $csvRow['strProductDataCode'],
-            'strProductName' => $csvRow['strProductName'],
-            'strProductDesc' => $csvRow['strProductDesc'],
-            'intProductStock' => $csvRow['intProductStock'],
-            'decProductCost' => $csvRow['decProductCost'],
-            'dtmDiscontinued' => $csvRow['dtmDiscontinued'] === 'yes' ? now() : null,
-        ]);
+        return DB::transaction(function () use ($csvRow) {
+            return $this->_product->create([
+                'strProductDataCode' => $csvRow['strProductDataCode'],
+                'strProductName' => $csvRow['strProductName'],
+                'strProductDesc' => $csvRow['strProductDesc'],
+                'intProductStock' => $csvRow['intProductStock'],
+                'decProductCost' => $csvRow['decProductCost'],
+                'dtmDiscontinued' => $this->_csvValidateCondition->checkDiscontinuedCondition($csvRow['dtmDiscontinued']),
+            ]);
+        });
     }
 }

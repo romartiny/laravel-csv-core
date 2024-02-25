@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Enums\CsvCondition as Condition;
 use App\Services\Interfaces\CsvValidateConditionServiceInterface;
+use Illuminate\Support\Carbon;
 
 class CsvValidateConditionService implements CsvValidateConditionServiceInterface
 {
@@ -40,6 +41,17 @@ class CsvValidateConditionService implements CsvValidateConditionServiceInterfac
     {
         return isset($csvRow[self::stockLineName])
             && intval($csvRow[self::stockLineName]) >= Condition::MIN_STOCK;
+    }
+
+    /**
+     * Check if the product is discontinued
+     *
+     * @param string $discontinued          Discontinued value from row
+     * @return Carbon|null                  The Carbon instance of the current date
+     */
+    public function checkDiscontinuedCondition(string $discontinued): ?Carbon
+    {
+        return $discontinued === 'yes' ? now() : null;
     }
 
     /**

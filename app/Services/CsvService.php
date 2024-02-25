@@ -25,15 +25,15 @@ class CsvService implements CsvServiceInterface
      * @param CsvProductRepositoryInterface $_csvProductRepository          The CSV product repository
      * @param CsvResponseInterface $_csvResponse                            The CSV response service
      * @param CsvValidatorInterface $_csvValidator                          The CSV validator service
-     * @param CsvValidateConditionInterface $_csvValidateConditions         The CSV validation condition service
+     * @param CsvValidateConditionInterface $_csvValidateCondition         The CSV validation condition service
      * @param Product $_product                                             The product model
      */
     public function __construct(
-        private readonly CsvProductRepositoryInterface        $_csvProductRepository,
-        private readonly CsvResponseInterface                 $_csvResponse,
-        private readonly CsvValidatorInterface                $_csvValidator,
-        private readonly CsvValidateConditionInterface        $_csvValidateConditions,
-        private readonly Product                              $_product
+        private readonly CsvProductRepositoryInterface  $_csvProductRepository,
+        private readonly CsvResponseInterface           $_csvResponse,
+        private readonly CsvValidatorInterface          $_csvValidator,
+        private readonly CsvValidateConditionInterface  $_csvValidateCondition,
+        private readonly Product                        $_product
     ) {}
 
     /**
@@ -49,7 +49,7 @@ class CsvService implements CsvServiceInterface
             return true;
         }
 
-        return $this->_csvValidateConditions->checkCsvConditions($data)
+        return $this->_csvValidateCondition->checkCsvConditions($data)
             && $this->_csvValidator->csvValidateRow($headers, $data);
     }
 
@@ -60,8 +60,8 @@ class CsvService implements CsvServiceInterface
      */
     private function renderCsvResponse(): void
     {
-        $this->_csvResponse->renderCsvTable($this->goodCsvRows, true, $this->headers);
-        $this->_csvResponse->renderCsvTable($this->skippedCsvRows, false, $this->headers);
+        $this->_csvResponse->renderCsvTable($this->goodCsvRows, $this->headers, true);
+        $this->_csvResponse->renderCsvTable($this->skippedCsvRows, $this->headers);
         $this->_csvResponse->renderCsvResult($this->goodRowsCount, $this->skippedRowsCount);
     }
 
@@ -118,7 +118,7 @@ class CsvService implements CsvServiceInterface
      * @return void
      * @throws Exception            If an error occurs
      */
-    public function storeCsvData(string $csvPath, string $testOption): void
+    public function processCsvData(string $csvPath, string $testOption): void
     {
         try {
             $csvIterator = new CsvIterator($csvPath, $this->_product->getFillable());

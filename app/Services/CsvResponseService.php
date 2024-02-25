@@ -21,11 +21,11 @@ class CsvResponseService implements CsvResponseServiceInterface
      * Render CSV table result.
      *
      * @param array $csvData            The CSV data to be rendered
-     * @param bool $headerOption        A flag for table header
      * @param array $header             An array containing the headers
+     * @param bool $headerOption        A flag for table header
      * @return void
      */
-    public function renderCsvTable(array $csvData, bool $headerOption, array $header): void
+    public function renderCsvTable(array $csvData, array $header, bool $headerOption = false): void
     {
         $table = new Table($this->_output);
 

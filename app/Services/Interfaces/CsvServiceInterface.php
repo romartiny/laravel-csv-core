@@ -4,5 +4,5 @@ namespace App\Services\Interfaces;
 
 interface CsvServiceInterface
 {
-    public function storeCsvData(string $csvPath, string $testOption);
+    public function processCsvData(string $csvPath, string $testOption);
 }

@@ -25,6 +25,8 @@ class CsvImport extends Command
     protected $description = 'Parse the contents and then insert the data into a MySQL database table';
 
     /**
+     * Constructs a CSV import.
+     *
      * @param CsvServiceInterface $_csvService
      */
     public function __construct(
@@ -43,6 +45,6 @@ class CsvImport extends Command
         $csvPath = $this->argument('path');
         $testOption = $this->option('test');
 
-        $this->_csvService->storeCsvData($csvPath, $testOption);
+        $this->_csvService->processCsvData($csvPath, $testOption);
     }
 }
