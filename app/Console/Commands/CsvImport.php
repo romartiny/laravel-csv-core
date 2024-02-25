@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Http\Controllers\CsvImportController;
+use App\Services\CsvService;
 use Illuminate\Console\Command;
 
 class CsvImport extends Command
@@ -24,10 +24,10 @@ class CsvImport extends Command
     protected $description = 'Parse the contents and then insert the data into a MySQL database table';
 
     /**
-     * @param CsvImportController $_csvImportController
+     * @param CsvService $_csvService
      */
     public function __construct(
-        private readonly CsvImportController $_csvImportController
+        private readonly CsvService $_csvService
     )
     {
         parent::__construct();
@@ -41,6 +41,6 @@ class CsvImport extends Command
         $csvPath = $this->argument('path');
         $testOption = $this->option('test');
 
-        $this->_csvImportController->importCsv($csvPath, $testOption);
+        $this->_csvService->storeCsvData($csvPath, $testOption);
     }
 }
