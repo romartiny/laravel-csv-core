@@ -5,18 +5,49 @@ namespace App\Services;
 use App\Enums\CsvCondition as Condition;
 use App\Services\Interfaces\CsvValidateConditionServiceInterface;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Config;
 
 class CsvValidateConditionService implements CsvValidateConditionServiceInterface
 {
-    /**
+    /*
+     * Represents the maximum cost condition for products.
+     */
+    private int $maxCostCondition;
+
+    /*
+     * Represents the minimum cost condition for products.
+     */
+    private int $minCostCondition;
+
+    /*
+     * Represents the minimum stock condition for products.
+     */
+    private int $minStockCondition;
+
+    /*
+     * Represents the discontinued condition for products.
+     */
+    private string $discontinuedCondition;
+
+    /*
      * The column name in the CSV file representing the product cost.
      */
-    const costLineName = 'decProductCost';
+    private string $costLineName;
 
-    /**
+    /*
      * The column name in the CSV file representing the product stock.
      */
-    const stockLineName = 'intProductStock';
+    private string $stockLineName;
+
+    public function __construct()
+    {
+        $this->maxCostCondition = Config::get('csv.conditions.max_cost');
+        $this->minCostCondition = Config::get('csv.conditions.min_cost');
+        $this->minStockCondition = Config::get('csv.conditions.min_stock');
+        $this->discontinuedCondition = Config::get('csv.conditions.discontinued');
+        $this->costLineName = Config::get('csv.fields.cost');
+        $this->stockLineName = Config::get('csv.fields.stock');
+    }
 
     /**
      * Checks the price condition for a CSV row.
@@ -26,9 +57,9 @@ class CsvValidateConditionService implements CsvValidateConditionServiceInterfac
      */
     private function checkPriceCondition(array $csvRow): bool
     {
-        return isset($csvRow[self::costLineName])
-            && intval($csvRow[self::costLineName]) >= Condition::MIN_PRICE
-            && intval($csvRow[self::costLineName]) <= Condition::MAX_PRICE;
+        return isset($csvRow[$this->costLineName])
+            && intval($csvRow[$this->costLineName]) >= $this->minCostCondition
+            && intval($csvRow[$this->costLineName]) <= $this->maxCostCondition;
     }
 
     /**
@@ -39,8 +70,8 @@ class CsvValidateConditionService implements CsvValidateConditionServiceInterfac
      */
     private function checkStockCondition(array $csvRow): bool
     {
-        return isset($csvRow[self::stockLineName])
-            && intval($csvRow[self::stockLineName]) >= Condition::MIN_STOCK;
+        return isset($csvRow[$this->stockLineName])
+            && intval($csvRow[$this->stockLineName]) >= $this->minStockCondition;
     }
 
     /**
@@ -51,7 +82,7 @@ class CsvValidateConditionService implements CsvValidateConditionServiceInterfac
      */
     public function checkDiscontinuedCondition(string $discontinued): ?Carbon
     {
-        return $discontinued === 'yes' ? now() : null;
+        return $discontinued === $this->discontinuedCondition ? now() : null;
     }
 
     /**
