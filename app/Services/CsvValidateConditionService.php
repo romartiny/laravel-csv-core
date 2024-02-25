@@ -1,0 +1,48 @@
+<?php
+
+namespace App\Services;
+
+use App\Enums\CsvCondition as Condition;
+use App\Services\Interfaces\CsvValidateConditionServiceInterface;
+
+class CsvValidateConditionService implements CsvValidateConditionServiceInterface
+{
+    const costLineName = 'decProductCost';
+    const stockLineName = 'intProductStock';
+
+    /**
+     * Checks the price condition for a CSV row.
+     *
+     * @param array $csvRow         The CSV row to be checked
+     * @return bool                 Returns the price condition
+     */
+    private function checkPriceCondition(array $csvRow): bool
+    {
+        return isset($csvRow[self::costLineName])
+            && intval($csvRow[self::costLineName]) >= Condition::MIN_PRICE
+            && intval($csvRow[self::costLineName]) <= Condition::MAX_PRICE;
+    }
+
+    /**
+     * Checks the stock condition for a CSV row.
+     *
+     * @param array $csvRow         The CSV row to be checked
+     * @return bool                 Returns the stock condition
+     */
+    private function checkStockCondition(array $csvRow): bool
+    {
+        return isset($csvRow[self::stockLineName])
+            && intval($csvRow[self::stockLineName]) >= Condition::MIN_STOCK;
+    }
+
+    /**
+     * Checks all CSV conditions for a given CSV row.
+     *
+     * @param array $csvRow         The CSV row to be checked
+     * @return bool                 Returns true if all CSV conditions are met, otherwise false
+     */
+    public function checkCsvConditions(array $csvRow): bool
+    {
+        return $this->checkPriceCondition($csvRow) && $this->checkStockCondition($csvRow);
+    }
+}
