@@ -2,6 +2,9 @@
 ## Introduction
 Laravel CSV Parser is a tool designed to simplify the process of importing CSV data into your Laravel application's database. It provides a convenient Artisan command php artisan app:csv-import to facilitate this task.
 
+## Important 
+No off-the-shelf libraries for data parsing and validation were used in the implementation of this project. In the future, it is possible to add a simpler validation via https://packagist.org/packages/oshomo/csv-utils, but this library has many disadvantages. 3 libraries were found, but unfortunately they didn't work the way the application expects. If I had more time, it would be possible to implement new methods to save good and bad strings from CSV to temporary files, from where the iterator would read them and output them to the console. This would be better done for the application to be able to handle more than 140000 rows.
+
 ## Installation
 Clone the repository
 ```bash
