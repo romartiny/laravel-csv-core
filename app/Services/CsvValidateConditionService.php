@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Enums\CsvCondition as Condition;
 use App\Services\Interfaces\CsvValidateConditionServiceInterface;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Config;
