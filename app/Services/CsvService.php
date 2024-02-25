@@ -13,10 +13,29 @@ use Exception;
 
 class CsvService implements CsvServiceInterface
 {
+    /*
+     * Array with good csv rows.
+     */
     private array $goodCsvRows = [];
+
+    /*
+     * Array with skipped csv rows.
+     */
     private array $skippedCsvRows = [];
+
+    /*
+     * Number of good csv rows.
+     */
     private int $goodRowsCount = 0;
+
+    /*
+     * Number of skipped csv rows.
+     */
     private int $skippedRowsCount = 0;
+
+    /*
+     * Headers for the table.
+     */
     private array $headers;
 
     /**
