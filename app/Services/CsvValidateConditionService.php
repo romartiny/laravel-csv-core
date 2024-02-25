@@ -38,6 +38,9 @@ class CsvValidateConditionService implements CsvValidateConditionServiceInterfac
      */
     private string $stockLineName;
 
+    /*
+     * Constructor for the CsvValidateConditionService class.
+     */
     public function __construct()
     {
         $this->maxCostCondition = Config::get('csv.conditions.max_cost');

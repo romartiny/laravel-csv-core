@@ -3,11 +3,32 @@
 namespace App\Services;
 
 use App\Services\Interfaces\CsvResponseServiceInterface;
+use Illuminate\Support\Facades\Config;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 class CsvResponseService implements CsvResponseServiceInterface
 {
+    /*
+     * Title for the CSV processing result.
+     */
+    private string $responseTitle;
+
+    /*
+     * Title for the count of good rows in the CSV processing result.
+     */
+    private string $responseGoodRows;
+
+    /*
+     * Title for the count of skipped rows in the CSV processing result.
+     */
+    private string $responseSkippedRows;
+
+    /*
+     * Title for the count of total rows in the CSV processing result.
+     */
+    private string $responseTotalRows;
+
     /**
      * Constructor for the CsvResponse class.
      *
@@ -15,7 +36,13 @@ class CsvResponseService implements CsvResponseServiceInterface
      */
     public function __construct(
         private readonly ConsoleOutput $_output
-    ) {}
+    )
+    {
+        $this->responseTitle = Config::get('csv.response.title');
+        $this->responseGoodRows = Config::get('csv.response.good_rows');
+        $this->responseSkippedRows = Config::get('csv.response.skipped_rows');
+        $this->responseTotalRows = Config::get('csv.response.total_rows');
+    }
 
     /**
      * Render CSV table result.
@@ -48,11 +75,11 @@ class CsvResponseService implements CsvResponseServiceInterface
     public function renderCsvResult(int $goodRowsCount, int $skippedRowsCount): void
     {
         $this->_output->writeln([
-            '<info>CSV Processing Result</info>',
+            sprintf('<info>%s</info>', $this->responseTitle),
             '=====================',
-            sprintf('Good rows: <info>%d</info>', $goodRowsCount),
-            sprintf('Skipped rows: <error>%d</error>', $skippedRowsCount),
-            sprintf('Total rows: <info>%d</info>', $goodRowsCount + $skippedRowsCount),
+            sprintf($this->responseGoodRows . '<info>%d</info>', $goodRowsCount),
+            sprintf($this->responseSkippedRows . '<error>%d</error>', $skippedRowsCount),
+            sprintf($this->responseTotalRows . '<info>%d</info>', $goodRowsCount + $skippedRowsCount),
             '=====================',
         ]);
     }
@@ -65,6 +92,6 @@ class CsvResponseService implements CsvResponseServiceInterface
      */
     public function csvErrorResponse(string $error): void
     {
-        $this->_output->writeln("<error> $error </error>");
+        $this->_output->writeln("<error>$error</error>");
     }
 }

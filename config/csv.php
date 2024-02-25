@@ -18,7 +18,7 @@ return [
         'min_cost' => env('CSV_CONDITION_MIN_COST', 5),
 
         // Maximum cost condition for products
-        'max_cost' => env('CSV_CONDITION_MAX_COST', 100),
+        'max_cost' => env('CSV_CONDITION_MAX_COST', 1000),
 
         // Minimum stock condition for products
         'min_stock' => env('CSV_CONDITION_MIN_STOCK', 10),
@@ -44,5 +44,30 @@ return [
 
         // Column name in the CSV file representing the product stock
         'stock' => env('CSV_FIELDS_STOCK', 'intProductStock')
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Response Titles for CSV tables
+    |--------------------------------------------------------------------------
+    |
+    | These values represent titles used in the CSV processing result response.
+    | Adjust these values as needed for your application.
+    |
+    */
+
+    'response' => [
+
+        // Title for the CSV processing result
+        'title' => env('CSV_RESPONSE_TITLE', 'CSV Processing Result'),
+
+        // Title for the count of good rows in the CSV processing result
+        'good_rows' => env('CSV_RESPONSE_GOOD_ROWS', 'Good rows:'),
+
+        // Title for the count of skipped rows in the CSV processing result
+        'skipped_rows' => env('CSV_RESPONSE_SKIPPED_ROWS', 'Skipped rows:'),
+
+        // Title for the count of total rows in the CSV processing result
+        'total_rows' => env('CSV_RESPONSE_TOTAL_ROWS', 'Total rows:')
     ]
 ];

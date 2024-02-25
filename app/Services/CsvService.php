@@ -25,7 +25,7 @@ class CsvService implements CsvServiceInterface
      * @param CsvProductRepositoryInterface $_csvProductRepository          The CSV product repository
      * @param CsvResponseInterface $_csvResponse                            The CSV response service
      * @param CsvValidatorInterface $_csvValidator                          The CSV validator service
-     * @param CsvValidateConditionInterface $_csvValidateCondition         The CSV validation condition service
+     * @param CsvValidateConditionInterface $_csvValidateCondition          The CSV validation condition service
      * @param Product $_product                                             The product model
      */
     public function __construct(
