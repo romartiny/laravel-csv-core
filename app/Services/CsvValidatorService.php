@@ -15,7 +15,9 @@ class CsvValidatorService implements CsvValidatorServiceInterface
      */
     public function csvValidateRow(array $headers, array $csvRow): bool
     {
-        if (count($csvRow) != count($headers)) return false;
+        if (count($csvRow) != count($headers)) {
+            return false;
+        }
 
         foreach ($csvRow as $rowData) {
             if (str_contains($rowData, ',') || str_contains($rowData, "\n") || str_contains($rowData, "\r")) {

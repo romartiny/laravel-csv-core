@@ -2,7 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Services\CsvService;
+use App\Services\Interfaces\CsvServiceInterface;
+use Exception;
 use Illuminate\Console\Command;
 
 class CsvImport extends Command
@@ -24,10 +25,10 @@ class CsvImport extends Command
     protected $description = 'Parse the contents and then insert the data into a MySQL database table';
 
     /**
-     * @param CsvService $_csvService
+     * @param CsvServiceInterface $_csvService
      */
     public function __construct(
-        private readonly CsvService $_csvService
+        private readonly CsvServiceInterface $_csvService
     )
     {
         parent::__construct();
@@ -35,6 +36,7 @@ class CsvImport extends Command
 
     /**
      * Execute the console command.
+     * @throws Exception
      */
     public function handle(): void
     {

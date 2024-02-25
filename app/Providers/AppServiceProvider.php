@@ -21,6 +21,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        $this->app->bind(CsvServiceInterface::class, CsvService::class);
         $this->app->bind(CsvResponseServiceInterface::class, CsvResponseService::class);
         $this->app->bind(CsvServiceInterface::class, CsvService::class);
         $this->app->bind(CsvValidateConditionServiceInterface::class, CsvValidateConditionService::class);

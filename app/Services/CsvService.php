@@ -66,7 +66,7 @@ class CsvService implements CsvServiceInterface
     }
 
     /**
-     *  Parses a single row and appends it to the target array.
+     * Parses a single row and appends it to the target array.
      *
      * @param array $row            The row of data to be parsed
      * @param array $targetArray    The array to which the parsed row will be appended
@@ -99,7 +99,7 @@ class CsvService implements CsvServiceInterface
     }
 
     /**
-     *  Saves the valid CSV rows to the product repository.
+     * Saves the valid CSV rows to the product repository.
      *
      * @return void
      */

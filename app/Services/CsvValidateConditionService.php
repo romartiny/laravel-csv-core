@@ -7,7 +7,14 @@ use App\Services\Interfaces\CsvValidateConditionServiceInterface;
 
 class CsvValidateConditionService implements CsvValidateConditionServiceInterface
 {
+    /**
+     * The column name in the CSV file representing the product cost.
+     */
     const costLineName = 'decProductCost';
+
+    /**
+     * The column name in the CSV file representing the product stock.
+     */
     const stockLineName = 'intProductStock';
 
     /**
