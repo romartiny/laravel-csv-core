@@ -1,8 +1,5 @@
 <?php
 
-use Illuminate\Foundation\Inspiring;
-use Illuminate\Support\Facades\Artisan;
-
 /*
 |--------------------------------------------------------------------------
 | Console Routes
@@ -14,6 +11,6 @@ use Illuminate\Support\Facades\Artisan;
 |
 */
 
-Artisan::command('inspire', function () {
-    $this->comment(Inspiring::quote());
-})->purpose('Display an inspiring quote');
+//Artisan::command('app:csv-import {path} {--test}', function (string $path, bool $test) {
+//    app(CsvController::class)->importCsv($path, $test);
+//})->describe('Parse the contents and then insert the data into a MySQL database table');
